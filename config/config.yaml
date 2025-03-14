@@ -1,0 +1,16 @@
+datasets_list_path: "datasets_list.txt"
+
+datasets:
+  # For external datasets, provide the CSV file path.
+  LeukSurv_external:
+    source: external
+    file_path: "External_datasets/LeukSurv_external.csv"
+
+models: ["CoxNet",
+         "CoxPH",
+         #"SurvTraceSingle",
+         #"FastCPH",
+         "DeepSurvivalMachines",
+         #"DeepHitSingle",
+         "RSF",
+         "GrBoostSA"]

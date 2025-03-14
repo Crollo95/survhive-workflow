@@ -1,74 +1,90 @@
-# Configuration Guide for the Snakemake Workflow of SurvHive
+# Standardized Snakemake Workflow for Survival Analysis
 
-This document provides details on how to configure the workflow using `config/config.yaml`. The configuration file specifies dataset sources, preprocessing settings, and models to be used for survival analysis.
+This repository provides a **Snakemake-based workflow** for survival analysis using datasets from **SurvSet** and external CSV files. The workflow automates data preprocessing, model training, cross-validation, and evaluation using survival models from **SurvHive**.
 
-## Configuration File Location
+## 🚀 Overview
+This workflow follows Snakemake best practices and ensures reproducibility across different computational environments. It allows users to:
+- Load survival datasets (SurvSet or external sources)
+- Preprocess and split the data
+- Perform cross-validation with multiple survival models
+- Evaluate model performance using the Concordance Index
+- Generate a final report summarizing results
 
-The main configuration file is located at:
+## 🛠️ Installation & Dependencies
+To run this workflow, you need:
+- **Snakemake** (v7.0+)
+- **Conda** (to manage dependencies)
+
+### Install Snakemake & Conda
+If not installed, set up **Miniconda** and Snakemake:
+```bash
+conda install -c conda-forge mamba  # Faster Conda environment management
+mamba create -n snakemake_env -c conda-forge snakemake
+conda activate snakemake_env
 ```
-config/config.yaml
+
+### ⚠️ First-Time Setup Warning
+During the **first run**, Snakemake will create Conda environments for different survival models, which may take some time due to the number of required dependencies. Once built, subsequent runs will be much faster.
+
+## 📂 Repository Structure
+```
+├── config/                 # Configuration files
+│   ├── config.yaml.example # Example configuration file
+│   ├── README.md           # Configuration guide
+├── data/                   # Input datasets (ignored in Git)
+├── logs/                   # Log files (ignored in Git)
+├── results/                # Processed outputs (ignored in Git)
+├── scripts/                # Python scripts for preprocessing & training
+├── workflow/               # Snakemake rules and pipeline logic
+│   ├── Snakefile           # Main Snakemake workflow
+│   ├── rules/              # Individual Snakemake rule definitions
+│   ├── envs/               # Conda environments (optional)
+├── .snakemake/             # Snakemake cache (ignored in Git)
+├── .snakemake-workflow-catalog.yml  # Snakemake catalog metadata
+├── .gitignore              # Ignore unnecessary files
+└── README.md               # This document
 ```
 
-Before running the workflow, you must create a `config.yaml` file.  
-Use the provided template and copy it:
-
+## ⚙️ Configuring the Workflow
+Before running, create a **custom configuration file**:
 ```bash
 cp config/config.yaml.example config/config.yaml
 ```
+Edit `config/config.yaml` to specify:
+- **Datasets** (SurvSet or external CSVs)
+- **Models** to use for training
+- **Dataset structure** (Required columns: `pid`, `event`, `time`)
+- **Feature Naming Convention:** All feature columns (except `pid`, `event`, `time`) must start with `num_` for numerical features or `fac_` for categorical features.
 
-Users can specify a custom configuration file using:
+## ▶️ Running the Workflow
+Once configured, execute Snakemake:
 ```bash
-snakemake --use-conda --cores <n> --configfile <path_to_config>
+snakemake --use-conda --cores <n>
+```
+- `<n>`: Number of CPU cores (e.g., `--cores 4`)
+- Use `--configfile config/config.yaml` to specify a custom config file
+
+### Running a Specific Rule
+```bash
+snakemake --use-conda preprocess_and_split
 ```
 
-## Configuration Parameters
-
-The `config.yaml` file is structured as follows:
-
-### 1. Dataset List File
-```yaml
-datasets_list_path: "datasets_list.txt"
+### Generating a Workflow Report
+```bash
+snakemake --use-conda --report workflow_report.html
 ```
-- This file lists the SurvSet datasets that will be processed.
-- It should be placed in the root of the project.
 
-### 2. Datasets Definition
-```yaml
-datasets:
-  <dataset_name>:
-    source: external  # Use 'survset' for SurvSet datasets
-    file_path: "<path_to_your_dataset>.csv"  # Only required for external datasets
-```
-- **External datasets** should be provided with an explicit file path.
-- **SurvSet datasets** do not need a file path; they will be automatically loaded.
-- Ensure that dataset files follow the correct format:
-  - **Required columns:** `pid`, `event`, `time`
-  - **Feature columns:**
-    - Categorical: prefixed with `fac_`
-    - Numerical: prefixed with `num_`
+## 📖 References & Citations
+This workflow is built upon the following frameworks and datasets:
 
-### 3. Models Selection
-```yaml
-models: ["CoxNet", "CoxPH", "DeepSurvivalMachines", "RSF", "GrBoostSA", "SurvTraceSingle", "FastCPH", "DeepHitSingle"]
-```
-- Specifies the models to be used in survival analysis.
-- Comment out models that should not be used.
+- **SurvHive**: A package for survival model optimization and evaluation.  
+  **Citation:** Birolo, Giovanni, et al. "SurvHive: a package to consistently access multiple survival-analysis packages." arXiv preprint arXiv:2502.02223 (2025).  
+  **GitHub:** [SurvHive Repository](https://github.com/compbiomed-unito/survhive)
 
-## Editing and Customization
+- **SurvSet**: An open-source time-to-event dataset repository.  
+  **Citation:** Drysdale, Erik. "SurvSet: An open-source time-to-event dataset repository." arXiv preprint arXiv:2203.03094 (2022).  
+  **GitHub:** [SurvSet Repository](https://github.com/ErikinBC/SurvSet)
 
-To modify configurations:
-1. Edit `config/config.yaml` using any text editor.
-2. Ensure correct indentation and syntax (YAML format sensitive to spacing).
-3. Save changes and run Snakemake with:
-   ```bash
-   snakemake --use-conda --cores <n>
-   ```
-
-## Common Issues & Debugging
-
-- **File Not Found Errors**: Ensure dataset paths in `config.yaml` exist and are correctly formatted.
-- **YAML Formatting Issues**: Use a YAML validator to check for indentation errors.
-- **Model Not Found**: Ensure the model name in `config.yaml` matches the available models in the workflow.
-
-For additional support, refer to the repository documentation or contact the workflow maintainer.
+---
+For additional support, refer to the **config README** (`config/README.md`) or contact the workflow maintainer. 🚀
 

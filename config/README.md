@@ -8,6 +8,13 @@ The main configuration file is located at:
 ```
 config/config.yaml
 ```
+
+Before running the workflow, you must create a `config.yaml` file.  
+Use the provided template and copy it:
+
+```bash
+cp config/config.yaml.example config/config.yaml
+
 Users can specify a custom configuration file using:
 ```bash
 snakemake --use-conda --cores <n> --configfile <path_to_config>
@@ -21,15 +28,15 @@ The `config.yaml` file is structured as follows:
 ```yaml
 datasets_list_path: "datasets_list.txt"
 ```
-- This file lists the datasets that will be processed.
+- This file lists the SurvSet datasets that will be processed.
 - It should be placed in the root of the project.
 
 ### 2. Datasets Definition
 ```yaml
 datasets:
-  LeukSurv_external:
-    source: external
-    file_path: "External_datasets/LeukSurv_external.csv"
+  <dataset_name>:
+    source: external  # Use 'survset' for SurvSet datasets
+    file_path: "<path_to_your_dataset>.csv"  # Only required for external datasets
 ```
 - **External datasets** should be provided with an explicit file path.
 - **SurvSet datasets** do not need a file path; they will be automatically loaded.
@@ -41,7 +48,7 @@ datasets:
 
 ### 3. Models Selection
 ```yaml
-models: ["CoxNet", "CoxPH", "DeepSurvivalMachines", "RSF", "GrBoostSA"]
+models: ["CoxNet", "CoxPH", "DeepSurvivalMachines", "RSF", "GrBoostSA", "SurvTraceSingle", "FastCPH", "DeepHitSingle"]
 ```
 - Specifies the models to be used in survival analysis.
 - Comment out models that should not be used.

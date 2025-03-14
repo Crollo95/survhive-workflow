@@ -14,6 +14,7 @@ Use the provided template and copy it:
 
 ```bash
 cp config/config.yaml.example config/config.yaml
+```
 
 Users can specify a custom configuration file using:
 ```bash

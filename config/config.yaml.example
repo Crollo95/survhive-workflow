@@ -1,0 +1,26 @@
+# Example configuration file for the Snakemake workflow of SurvHive
+# Copy this file and rename it to 'config.yaml' before running the workflow.
+
+# Path to the list of datasets to be processed
+datasets_list_path: "datasets_list.txt"
+
+# Define datasets here.
+# External datasets require specifying a file path.
+# SurvSet datasets do not require a file path.
+datasets:
+  example_dataset:
+    source: external  # Use 'survset' for SurvSet datasets
+    file_path: "path/to/your_dataset.csv"
+
+# Models to be used for survival analysis.
+# Comment out any models you do not want to use.
+models:
+  - CoxNet
+  - CoxPH
+  - DeepSurvivalMachines
+  - RSF
+  - GrBoostSA
+  - SurvTraceSingle
+  - FastCPH
+  - DeepHitSingle
+

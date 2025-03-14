@@ -1,90 +1,74 @@
-# Standardized Snakemake Workflow for Survival Analysis
+# Configuration Guide for SurvHive Workflow
 
-This repository provides a **Snakemake-based workflow** for survival analysis using datasets from **SurvSet** and external CSV files. The workflow automates data preprocessing, model training, cross-validation, and evaluation using survival models from **SurvHive**.
+This document explains how to set up and configure the `config.yaml` file for the SurvHive Snakemake workflow.
 
-## 🚀 Overview
-This workflow follows Snakemake best practices and ensures reproducibility across different computational environments. It allows users to:
-- Load survival datasets (SurvSet or external sources)
-- Preprocess and split the data
-- Perform cross-validation with multiple survival models
-- Evaluate model performance using the Concordance Index
-- Generate a final report summarizing results
-
-## 🛠️ Installation & Dependencies
-To run this workflow, you need:
-- **Snakemake** (v7.0+)
-- **Conda** (to manage dependencies)
-
-### Install Snakemake & Conda
-If not installed, set up **Miniconda** and Snakemake:
-```bash
-conda install -c conda-forge mamba  # Faster Conda environment management
-mamba create -n snakemake_env -c conda-forge snakemake
-conda activate snakemake_env
-```
-
-### ⚠️ First-Time Setup Warning
-During the **first run**, Snakemake will create Conda environments for different survival models, which may take some time due to the number of required dependencies. Once built, subsequent runs will be much faster.
-
-## 📂 Repository Structure
-```
-├── config/                 # Configuration files
-│   ├── config.yaml.example # Example configuration file
-│   ├── README.md           # Configuration guide
-├── data/                   # Input datasets (ignored in Git)
-├── logs/                   # Log files (ignored in Git)
-├── results/                # Processed outputs (ignored in Git)
-├── scripts/                # Python scripts for preprocessing & training
-├── workflow/               # Snakemake rules and pipeline logic
-│   ├── Snakefile           # Main Snakemake workflow
-│   ├── rules/              # Individual Snakemake rule definitions
-│   ├── envs/               # Conda environments (optional)
-├── .snakemake/             # Snakemake cache (ignored in Git)
-├── .snakemake-workflow-catalog.yml  # Snakemake catalog metadata
-├── .gitignore              # Ignore unnecessary files
-└── README.md               # This document
-```
-
-## ⚙️ Configuring the Workflow
-Before running, create a **custom configuration file**:
+## 1️⃣ Creating a Configuration File
+Before running the workflow, copy the example configuration file and modify it as needed:
 ```bash
 cp config/config.yaml.example config/config.yaml
 ```
-Edit `config/config.yaml` to specify:
-- **Datasets** (SurvSet or external CSVs)
-- **Models** to use for training
-- **Dataset structure** (Required columns: `pid`, `event`, `time`)
-- **Feature Naming Convention:** All feature columns (except `pid`, `event`, `time`) must start with `num_` for numerical features or `fac_` for categorical features.
 
-## ▶️ Running the Workflow
-Once configured, execute Snakemake:
+## 2️⃣ Dataset Configuration
+The `datasets` section defines datasets that will be processed. Each dataset requires a **source** and, if necessary, a file path.
+
+### Dataset Entry Format
+```yaml
+datasets:
+  dataset_name:
+    source: survset  # Must be either 'survset' or 'external'
+    file_path: "path/to/dataset.csv"  # Only required for 'external' datasets
+```
+
+- **`source` must be `survset` or `external`** (case-insensitive):
+  - `survset`: The dataset is from the **SurvSet** repository.
+  - `external`: The dataset is a CSV file (requires `file_path`).
+- **For `external` datasets, `file_path` must be specified.**
+- **For `survset` datasets, `file_path` must NOT be provided.**
+- Any other value for `source` will trigger an error.
+
+### Example Configuration
+```yaml
+datasets:
+  lung_cancer:
+    source: survset
+  clinical_study:
+    source: external
+    file_path: "data/clinical_study.csv"
+```
+
+## 3️⃣ Model Selection
+Define which survival models should be used for training and evaluation.
+
+```yaml
+models:
+  - CoxPH
+  - RSF
+  - DeepHitSingle
+```
+
+You can comment out models you do not want to use.
+
+## 4️⃣ Feature Naming Conventions
+To ensure consistency, datasets should follow these column conventions:
+- **Mandatory Columns:**
+  - `pid`: Unique identifier for patients or samples
+  - `event`: Binary event indicator (1 = event occurred, 0 = censored)
+  - `time`: Time-to-event or censoring
+- **Feature Columns:**
+  - `num_`: Prefix for numerical features
+  - `fac_`: Prefix for categorical features
+
+## 5️⃣ Running the Workflow
+Once `config.yaml` is set up, execute Snakemake:
 ```bash
 snakemake --use-conda --cores <n>
 ```
-- `<n>`: Number of CPU cores (e.g., `--cores 4`)
-- Use `--configfile config/config.yaml` to specify a custom config file
+Where `<n>` is the number of CPU cores to allocate.
 
-### Running a Specific Rule
-```bash
-snakemake --use-conda preprocess_and_split
-```
+## 6️⃣ Troubleshooting
+- Ensure `source` is correctly set (`survset` or `external`).
+- If using `external`, verify that `file_path` is correct.
+- Use `snakemake --use-conda --dry-run` to test the configuration before execution.
 
-### Generating a Workflow Report
-```bash
-snakemake --use-conda --report workflow_report.html
-```
-
-## 📖 References & Citations
-This workflow is built upon the following frameworks and datasets:
-
-- **SurvHive**: A package for survival model optimization and evaluation.  
-  **Citation:** Birolo, Giovanni, et al. "SurvHive: a package to consistently access multiple survival-analysis packages." arXiv preprint arXiv:2502.02223 (2025).  
-  **GitHub:** [SurvHive Repository](https://github.com/compbiomed-unito/survhive)
-
-- **SurvSet**: An open-source time-to-event dataset repository.  
-  **Citation:** Drysdale, Erik. "SurvSet: An open-source time-to-event dataset repository." arXiv preprint arXiv:2203.03094 (2022).  
-  **GitHub:** [SurvSet Repository](https://github.com/ErikinBC/SurvSet)
-
----
-For additional support, refer to the **config README** (`config/README.md`) or contact the workflow maintainer. 🚀
+For further details, refer to the main `README.md`. 🚀
 

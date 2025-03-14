@@ -1,0 +1,29 @@
+usage:
+  mandatory-flags:
+    desc: |
+      This survival analysis workflow automates dataset processing, cross-validation, and model evaluation.
+      It supports both SurvSet and external CSV datasets, which must be specified in `config/config.yaml`.
+      The workflow ensures standardized preprocessing and evaluates model performance using the Concordance Index.
+
+      **Configuration:**
+      - **Dataset list file**: `datasets_list.txt` (path defined in `config.yaml`).
+      - **External datasets**: Must be specified under `datasets` in `config.yaml`.
+      - **Available models**: Defined in `config.yaml` under `models`.
+
+      The workflow requires Conda environments, so '--use-conda' must be included.
+    flags:
+      - "--use-conda"
+
+  optional-flags:
+    desc: "Optional runtime flags for customization."
+    flags:
+      - "--cores <n>: Specify the number of CPU cores for parallel execution."
+      - "--configfile <path>: Provide a custom configuration file."
+
+  software-stack-deployment:
+    conda: true
+    singularity: false
+    singularity+conda: false
+
+  report: true
+

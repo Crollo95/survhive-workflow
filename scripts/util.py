@@ -6,8 +6,13 @@ def read_valid_datasets(file_path):
 
 def build_extra_args(dataset, config):
     ds_conf = config.get("datasets", {}).get(dataset, {})
-    if ds_conf.get("source", "survset") == "external":
+    source = ds_conf.get("source", "survset").lower()  # Convert to lowercase
+    
+    if source not in ["survset", "external"]:
+        raise ValueError(f"Invalid source '{source}' for dataset {dataset}. Must be 'survset' or 'external'.")
+    
+    if source == "external":
         file_path = ds_conf.get("file_path", "")
-        # Use an f-string to build the argument without using '+'
-        return f"--external {'--file_path ' + file_path if file_path else ''}".strip()
-    return ""
+        return f"--external --file_path {file_path}" if file_path else "--external"
+    
+    return ""  # Default is SurvSet

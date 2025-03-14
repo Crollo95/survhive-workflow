@@ -13,7 +13,11 @@ results/
 # Ignore Snakemake-generated reports
 workflow_report.html
 
-#Ignore Snakemake’s cache and working directory
+# Ignore Snakemake’s cache and working directory
 .snakemake/
+
+# Ignore External_datasets but keep the empty folder 
+External_datasets/*
+!.gitignore
 
 **/.ipynb_checkpoints/

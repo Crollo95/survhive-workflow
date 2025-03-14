@@ -2,6 +2,7 @@
 
 This repository provides a **Snakemake-based workflow** for survival analysis using datasets from **SurvSet** and external CSV files. The workflow automates data preprocessing, model training, cross-validation, and evaluation using survival models from **SurvHive**.
 
+
 ## 🚀 Overview
 This workflow follows Snakemake best practices and ensures reproducibility across different computational environments. It allows users to:
 - Load survival datasets (SurvSet or external sources)
@@ -9,6 +10,7 @@ This workflow follows Snakemake best practices and ensures reproducibility acros
 - Perform cross-validation with multiple survival models
 - Evaluate model performance using the Concordance Index
 - Generate a final report summarizing results
+
 
 ## 🛠️ Installation & Dependencies
 To run this workflow, you need:
@@ -23,8 +25,6 @@ mamba create -n snakemake_env -c conda-forge snakemake
 conda activate snakemake_env
 ```
 
-### ⚠️ First-Time Setup Warning
-During the **first run**, Snakemake will create Conda environments for different survival models, which may take some time due to the number of required dependencies. Once built, subsequent runs will be much faster.
 
 ## 📂 Repository Structure
 ```
@@ -45,6 +45,7 @@ During the **first run**, Snakemake will create Conda environments for different
 └── README.md               # This document
 ```
 
+
 ## ⚙️ Configuring the Workflow
 Before running, create a **custom configuration file**:
 ```bash
@@ -55,6 +56,7 @@ Edit `config/config.yaml` to specify:
 - **Models** to use for training
 - **Dataset structure** (Required columns: `pid`, `event`, `time`)
 
+
 ## ▶️ Running the Workflow
 Once configured, execute Snakemake:
 ```bash
@@ -63,10 +65,14 @@ snakemake --use-conda --cores <n>
 - `<n>`: Number of CPU cores (e.g., `--cores 4`)
 - Use `--configfile config/config.yaml` to specify a custom config file
 
+### ⚠️ First-Time Setup Warning
+During the **first run**, Snakemake will create Conda environments for different survival models, which may take some time due to the number of required dependencies. Once built, subsequent runs will be much faster.
+
 ### Running a Specific Rule
 ```bash
 snakemake --use-conda preprocess_and_split
 ```
+
 
 ## 📖 References & Citations
 This workflow is built upon the following frameworks and datasets:

@@ -20,4 +20,7 @@ workflow_report.html
 External_datasets/*
 !.gitignore
 
+# Ignore datasets list
+datasets_list.txt
+
 **/.ipynb_checkpoints/

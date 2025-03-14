@@ -24,3 +24,5 @@ External_datasets/*
 datasets_list.txt
 
 **/.ipynb_checkpoints/
+scripts/__pycache__/
+

@@ -13,5 +13,5 @@ rule cross_validation:
     shell:
         (
             f"python {os.path.join(SCRIPTS_DIR, 'cross_validation.py')} "
-            f"--dataset {{params.dataset}} --model {{params.model}} --seed 42 --output {{output}} --n_trials 1 > {{log}} 2>&1"
+            f"--dataset {{params.dataset}} --model {{params.model}} --seed 42 --output {{output}} --n_trials {config.get('n_trials', 10)} > {{log}} 2>&1"
         )

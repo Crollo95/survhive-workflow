@@ -27,7 +27,7 @@ def main():
     )
     parser.add_argument("--dataset", required=True, help="Name of the dataset")
     parser.add_argument("--model", required=True, help="Survival model")
-    parser.add_argument("--n_trials", type=int, default=20, help="Number of trials (default: 20)")
+    parser.add_argument("--n_trials", type=int, default=10, help="Number of trials (default: 10)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--output", required=True, help="Path to the output pickle file")
     args = parser.parse_args()

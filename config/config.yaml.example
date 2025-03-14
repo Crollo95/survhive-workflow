@@ -24,3 +24,7 @@ models:
   - FastCPH
   - DeepHitSingle
 
+# Number of trials for hyperparameter optimization in cross-validation
+n_trials: 10  # Default is 10. Increase for better tuning, decrease for speed.
+
+

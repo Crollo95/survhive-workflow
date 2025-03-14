@@ -58,6 +58,38 @@ To ensure consistency, datasets should follow these column conventions:
   - `num_`: Prefix for numerical features
   - `fac_`: Prefix for categorical features
 
+## 5️⃣ Cross-Validation Trials
+The number of trials used for hyperparameter optimization in cross-validation can be configured using the `n_trials` setting in `config.yaml`. 
+This allows users to control the trade-off between optimization quality and computation time.
+
+```yaml
+n_trials: 10  # Default is 10. Increase for better tuning, decrease for speed.
+```
+
+## 6️⃣ Running the Workflow
+Once `config.yaml` is set up, execute Snakemake:
+```bash
+snakemake --use-conda --cores <n>
+```
+Where `<n>` is the number of CPU cores to allocate.
+
+## 7️⃣ Troubleshooting
+- Ensure `source` is correctly set (`survset` or `external`).
+- If using `external`, verify that `file_path` is correct.
+- Use `snakemake --use-conda --dry-run` to test the configuration before execution.
+
+For further details, refer to the main `README.md`. 🚀
+
+
+
+
+
+
+
+
+
+
+
 ## 5️⃣ Running the Workflow
 Once `config.yaml` is set up, execute Snakemake:
 ```bash

@@ -1,2 +1,19 @@
+# Ignore config
 config/config.yaml
+
+# Ignore dataset files
+data/
+
+# Ignore log files
+logs/
+
+# Ignore results (processed outputs)
+results/
+
+# Ignore Snakemake-generated reports
+workflow_report.html
+
+#Ignore Snakemake’s cache and working directory
+.snakemake/
+
 **/.ipynb_checkpoints/
